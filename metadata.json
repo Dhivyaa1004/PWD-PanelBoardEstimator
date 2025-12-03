@@ -1,0 +1,5 @@
+{
+  "name": "Indian Electrical Panel Cost Estimator",
+  "description": "A tool to calculate the total cost of an electrical panel board in Indian Rupees (INR) by entering costs for switches, meters, wiring, enclosure, labor, and other materials.",
+  "requestFramePermissions": []
+}

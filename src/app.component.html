@@ -1,0 +1,861 @@
+<main class="container mx-auto p-4 sm:p-6 lg:p-8 text-slate-800 dark:text-slate-200 flex flex-col items-center">
+  <!-- Header -->
+  <header class="mb-8 text-center">
+    <h1 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white">
+      <i class="fa-solid fa-bolt-lightning mr-3 text-sky-500"></i>Electrical Panel Cost Estimator
+    </h1>
+    <p class="mt-2 text-lg text-slate-600 dark:text-slate-400">Enter panel dimensions and costs to get an instant estimate in Indian Rupees.</p>
+  </header>
+
+  <div class="w-full max-w-3xl bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-lg">
+    
+    <!-- Image -->
+    <div class="mb-8 rounded-lg overflow-hidden">
+        <img src="https://storage.googleapis.com/genai-studio-template-assets/electrical_panel.jpg" alt="Electrical Panel Board" class="w-full h-auto object-cover">
+    </div>
+
+    <!-- Panel Dimensions Section -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Panel Dimensions & Structure
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4">
+        <!-- Length -->
+        <div>
+          <label for="lengthFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Length (ft)</label>
+          <input type="number" id="lengthFt" min="0" placeholder="e.g., 2.5" 
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="lengthFt() ?? ''"
+                 (input)="onLengthChange($event)">
+        </div>
+        <!-- Height -->
+        <div>
+          <label for="heightFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Height (ft)</label>
+          <input type="number" id="heightFt" min="0" placeholder="e.g., 4"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="heightFt() ?? ''"
+                 (input)="onHeightChange($event)">
+        </div>
+        <!-- Depth -->
+        <div>
+          <label for="depthFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Depth (ft)</label>
+          <input type="number" id="depthFt" min="0" placeholder="e.g., 1"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="depthFt() ?? ''"
+                 (input)="onDepthChange($event)">
+        </div>
+        <!-- Vertical Separators -->
+        <div class="sm:col-span-1">
+          <label for="verticalSeparators" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Vertical Separators</label>
+          <input type="number" id="verticalSeparators" min="0" placeholder="e.g., 1"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="verticalSeparators() ?? ''"
+                 (input)="onVerticalSeparatorsChange($event)">
+        </div>
+        <!-- Horizontal Separators -->
+        <div class="sm:col-span-2">
+          <label for="horizontalSeparators" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Horizontal Separators</label>
+          <input type="number" id="horizontalSeparators" min="0" placeholder="e.g., 3"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="horizontalSeparators() ?? ''"
+                 (input)="onHorizontalSeparatorsChange($event)">
+        </div>
+      </div>
+    </section>
+
+    <!-- Enclosure Material & Fabrication -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Enclosure Material & Fabrication
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4">
+        <!-- 16 SWG CRCA Sheet cost (per sq.ft) -->
+        <div>
+          <label for="crcaSheetCost" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">CRCA Sheet (per sq.ft)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="crcaSheetCost" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="crcaSheetCostPerSqFt() ?? ''"
+                   (input)="onCrcaSheetCostChange($event)">
+          </div>
+        </div>
+        <!-- Sheet Fabrication Cost (per sq.ft) -->
+        <div>
+          <label for="fabricationCost" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Fabrication (per sq.ft)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="fabricationCost" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="fabricationCostPerSqFt() ?? ''"
+                   (input)="onFabricationCostChange($event)">
+          </div>
+        </div>
+        <!-- Wastage -->
+        <div>
+            <label for="wastagePercent" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Wastage (%)</label>
+            <input type="number" id="wastagePercent" min="0" placeholder="10" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="wastagePercent() ?? ''"
+                   (input)="onWastageChange($event)">
+        </div>
+      </div>
+    </section>
+
+    <!-- Base Channel Cost -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Base Channel Cost
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4 mb-4">
+        <!-- Channel Length -->
+        <div>
+          <label for="channelLengthFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Channel Length (ft)</label>
+          <input type="number" id="channelLengthFt" min="0" placeholder="e.g., 2.5" 
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="channelLengthFt() ?? ''"
+                 (input)="onChannelLengthChange($event)">
+          @if (channelLengthFt()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ channelLengthMeters() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+        <!-- Channel Breadth -->
+        <div>
+          <label for="channelBreadthFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Channel Breadth (ft)</label>
+          <input type="number" id="channelBreadthFt" min="0" placeholder="e.g., 1"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="channelBreadthFt() ?? ''"
+                 (input)="onChannelBreadthChange($event)">
+          @if (channelBreadthFt()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ channelBreadthMeters() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+        <!-- Channel Height -->
+        <div>
+          <label for="channelHeightFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Channel Height (ft)</label>
+          <input type="number" id="channelHeightFt" min="0" placeholder="e.g., 0.5"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="channelHeightFt() ?? ''"
+                 (input)="onChannelHeightChange($event)">
+          @if (channelHeightFt()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ channelHeightMeters() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- MS Channel Cost -->
+        <div>
+            <label for="msChannelCost" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">MS Channel Cost (per sq.ft)</label>
+            <div class="relative rounded-md shadow-sm">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+                <input type="number" id="msChannelCost" min="0" placeholder="0.00" 
+                       class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                       [value]="msChannelCostPerSqFt() ?? ''"
+                       (input)="onMsChannelCostChange($event)">
+            </div>
+        </div>
+        <!-- Channel Fabrication Cost -->
+        <div>
+            <label for="channelFabricationCost" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Channel Fabrication (per sq.ft)</label>
+            <div class="relative rounded-md shadow-sm">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+                <input type="number" id="channelFabricationCost" min="0" placeholder="0.00" 
+                       class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                       [value]="channelFabricationCostPerSqFt() ?? ''"
+                       (input)="onChannelFabricationCostChange($event)">
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Copper Bus Bar Section -->
+    <section class="mb-6">
+       <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Copper Bus bar for 3 phase and neutral
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- Copper Length -->
+        <div>
+          <label for="copperLengthFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Copper Length (ft)</label>
+          <input type="number" id="copperLengthFt" min="0" placeholder="e.g., 4" 
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="copperLengthFt() ?? ''"
+                 (input)="onCopperLengthChange($event)">
+          @if (copperLengthFt()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ copperLengthMeters() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+        <!-- Number of Coppers -->
+        <div>
+          <label for="numberOfCoppers" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No of Coppers</label>
+          <input type="number" id="numberOfCoppers" min="0" placeholder="e.g., 4"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfCoppers() ?? ''"
+                 (input)="onNumberOfCoppersChange($event)">
+        </div>
+        <!-- Copper Weight -->
+        <div>
+          <label for="copperWeight" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Copper Weight (kg per meter)</label>
+          <input type="number" id="copperWeight" min="0" placeholder="e.g., 0.88"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="copperWeightPerMeter() ?? ''"
+                 (input)="onCopperWeightChange($event)">
+        </div>
+        <!-- Copper Price -->
+        <div>
+          <label for="copperPricePerKg" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Copper Price (per kg)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="copperPricePerKg" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="copperPricePerKg() ?? ''"
+                   (input)="onCopperPricePerKgChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Calculation Summary for Bus Bar -->
+      <div class="mt-4 p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg text-sm">
+        <div class="flex justify-between">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Copper Length:</span>
+            <span class="font-mono">{{ totalCopperLengthMeters() | number:'1.2-2' }} m</span>
+        </div>
+        <div class="flex justify-between mt-1">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Copper Weight:</span>
+            <span class="font-mono">{{ totalCopperWeightKg() | number:'1.2-2' }} kg</span>
+        </div>
+      </div>
+    </section>
+
+     <!-- Copper Bus Bar for Earth Section -->
+    <section class="mb-6">
+       <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Copper Bus bar for Earth
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- Earth Bar Length -->
+        <div>
+          <label for="earthBarLengthFt" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Earth Bar Length (ft)</label>
+          <input type="number" id="earthBarLengthFt" min="0" placeholder="e.g., 4" 
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="earthBarLengthFt() ?? ''"
+                 (input)="onEarthBarLengthChange($event)">
+          @if (earthBarLengthFt()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ earthBarLengthMeters() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+        <!-- Number of Earth Bars -->
+        <div>
+          <label for="numberOfEarthBars" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No of Earth Bars</label>
+          <input type="number" id="numberOfEarthBars" min="0" placeholder="e.g., 1"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfEarthBars() ?? ''"
+                 (input)="onNumberOfEarthBarsChange($event)">
+        </div>
+        <!-- Earth Bar Weight -->
+        <div>
+          <label for="earthBarWeight" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Earth Bar Weight (kg per meter)</label>
+          <input type="number" id="earthBarWeight" min="0" placeholder="e.g., 0.88"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="earthBarWeightPerMeter() ?? ''"
+                 (input)="onEarthBarWeightChange($event)">
+        </div>
+        <!-- Earth Bar Price -->
+        <div>
+          <label for="earthBarPricePerKg" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Earth Bar Price (per kg)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="earthBarPricePerKg" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="earthBarPricePerKg() ?? ''"
+                   (input)="onEarthBarPricePerKgChange($event)">
+          </div>
+        </div>
+      </div>
+       <!-- Calculation Summary for Earth Bar -->
+      <div class="mt-4 p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg text-sm">
+        <div class="flex justify-between">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Earth Bar Length:</span>
+            <span class="font-mono">{{ totalEarthBarLengthMeters() | number:'1.2-2' }} m</span>
+        </div>
+        <div class="flex justify-between mt-1">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Earth Bar Weight:</span>
+            <span class="font-mono">{{ totalEarthBarWeightKg() | number:'1.2-2' }} kg</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interconnections Section -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Interconnections from bus bar to TPN switches
+      </h2>
+
+      <!-- Connection 1 -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">SWITCHES CONNECTION - 1:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- Number of Switches 1 -->
+        <div>
+          <label for="numberOfSwitches1" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Switches</label>
+          <input type="number" id="numberOfSwitches1" min="0" placeholder="e.g., 5"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfSwitches1() ?? ''"
+                 (input)="onNumberOfSwitchesChange1($event)">
+        </div>
+        <!-- Copper Length per Switch 1 -->
+        <div>
+          <label for="copperLengthPerSwitchFt1" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Copper Length per Switch (ft)</label>
+          <input type="number" id="copperLengthPerSwitchFt1" min="0" placeholder="e.g., 1.5" 
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="copperLengthPerSwitchFt1() ?? ''"
+                 (input)="onCopperLengthPerSwitchChange1($event)">
+          @if (copperLengthPerSwitchFt1()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ copperLengthPerSwitchMeters1() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+        <!-- Connection Copper Weight 1 -->
+        <div>
+          <label for="connectionCopperWeight1" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Connection Copper Weight (kg/m)</label>
+          <input type="number" id="connectionCopperWeight1" min="0" placeholder="e.g., 0.22"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="connectionCopperWeightPerMeter1() ?? ''"
+                 (input)="onConnectionCopperWeightChange1($event)">
+        </div>
+        <!-- Connection Copper Price 1 -->
+        <div>
+          <label for="connectionCopperPrice1" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Connection Copper Price (per kg)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="connectionCopperPrice1" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="connectionCopperPricePerKg1() ?? ''"
+                   (input)="onConnectionCopperPriceChange1($event)">
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 mb-6 p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg text-sm">
+        <div class="flex justify-between">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Conn. Length (1):</span>
+            <span class="font-mono">{{ totalConnectionCopperLengthMeters1() | number:'1.2-2' }} m</span>
+        </div>
+        <div class="flex justify-between mt-1">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Conn. Weight (1):</span>
+            <span class="font-mono">{{ totalConnectionCopperWeightKg1() | number:'1.2-2' }} kg</span>
+        </div>
+      </div>
+      
+      <!-- Connection 2 -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">SWITCHES CONNECTION - 2:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- Number of Switches 2 -->
+        <div>
+          <label for="numberOfSwitches2" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Switches</label>
+          <input type="number" id="numberOfSwitches2" min="0" placeholder="e.g., 2"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfSwitches2() ?? ''"
+                 (input)="onNumberOfSwitchesChange2($event)">
+        </div>
+        <!-- Copper Length per Switch 2 -->
+        <div>
+          <label for="copperLengthPerSwitchFt2" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Copper Length per Switch (ft)</label>
+          <input type="number" id="copperLengthPerSwitchFt2" min="0" placeholder="e.g., 2.0" 
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="copperLengthPerSwitchFt2() ?? ''"
+                 (input)="onCopperLengthPerSwitchChange2($event)">
+          @if (copperLengthPerSwitchFt2()) {
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              {{ copperLengthPerSwitchMeters2() | number:'1.2-2' }} meters
+            </p>
+          }
+        </div>
+        <!-- Connection Copper Weight 2 -->
+        <div>
+          <label for="connectionCopperWeight2" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Connection Copper Weight (kg/m)</label>
+          <input type="number" id="connectionCopperWeight2" min="0" placeholder="e.g., 0.44"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="connectionCopperWeightPerMeter2() ?? ''"
+                 (input)="onConnectionCopperWeightChange2($event)">
+        </div>
+        <!-- Connection Copper Price 2 -->
+        <div>
+          <label for="connectionCopperPrice2" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Connection Copper Price (per kg)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="connectionCopperPrice2" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="connectionCopperPricePerKg2() ?? ''"
+                   (input)="onConnectionCopperPriceChange2($event)">
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg text-sm">
+        <div class="flex justify-between">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Conn. Length (2):</span>
+            <span class="font-mono">{{ totalConnectionCopperLengthMeters2() | number:'1.2-2' }} m</span>
+        </div>
+        <div class="flex justify-between mt-1">
+            <span class="font-medium text-slate-600 dark:text-slate-400">Total Conn. Weight (2):</span>
+            <span class="font-mono">{{ totalConnectionCopperWeightKg2() | number:'1.2-2' }} kg</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tinning Copper Section -->
+    <section class="mb-6">
+       <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Tinning Copper
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 items-center">
+        <!-- Total Weight Display -->
+        <div class="p-4 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+           <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Total Overall Copper Weight</p>
+           <p class="text-2xl font-bold font-mono">{{ totalOverallCopperWeightKg() | number:'1.2-2' }} kg</p>
+        </div>
+        <!-- Tinning Price -->
+        <div>
+          <label for="tinningPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tinning Copper Price (per kg)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="tinningPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="tinningCopperPricePerKg() ?? ''"
+                   (input)="onTinningPriceChange($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HYLEM SHEET & OTHER COMPONENTS -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        HYLEM SHEET & OTHER COMPONENTS
+      </h2>
+      <!-- HYLEM Sheet -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">HYLEM SHEET</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="hylemSheetArea" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Thick Hylem sheet separation (sq.m)</label>
+          <input type="number" id="hylemSheetArea" min="0" placeholder="e.g., 1.5"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="hylemSheetAreaSqM() ?? ''"
+                 (input)="onHylemSheetAreaChange($event)">
+        </div>
+        <div>
+          <label for="hylemSheetPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Hylem sheet separation Price (per sq.m)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="hylemSheetPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="hylemSheetPricePerSqM() ?? ''"
+                   (input)="onHylemSheetPriceChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- SMC -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">SMC</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="numberOfSmc" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of SMC</label>
+          <input type="number" id="numberOfSmc" min="0" placeholder="e.g., 20"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfSmc() ?? ''"
+                 (input)="onNumberOfSmcChange($event)">
+        </div>
+        <div>
+          <label for="smcPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">SMC price (per unit)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="smcPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="smcPricePerUnit() ?? ''"
+                   (input)="onSmcPriceChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Interconnection Charges -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Interconnection Charges</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <div>
+          <label for="numberOfInterSwitches" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Switches</label>
+          <input type="number" id="numberOfInterSwitches" min="0" placeholder="e.g., 10"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfInterconnectionSwitches() ?? ''"
+                 (input)="onNumberOfInterconnectionSwitchesChange($event)">
+        </div>
+        <div>
+          <label for="interconnectionPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Switches Price (per switch)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="interconnectionPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="interconnectionPricePerSwitch() ?? ''"
+                   (input)="onInterconnectionPriceChange($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Painting & Miscellaneous Charges -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Painting & Miscellaneous Charges
+      </h2>
+      <!-- Powder Coated -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Powder Coated</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="powderCoatedArea" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Powder Coated (sq.m)</label>
+          <input type="number" id="powderCoatedArea" min="0" placeholder="e.g., 5.5"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="powderCoatedSqM() ?? ''"
+                 (input)="onPowderCoatedSqMChange($event)">
+        </div>
+        <div>
+          <label for="powderCoatedPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Powder Coated price (per sq.m)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="powderCoatedPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="powderCoatedPrice() ?? ''"
+                   (input)="onPowderCoatedPriceChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Scribing -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Scribing</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="scribingUnits" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Scribing (Units)</label>
+          <input type="number" id="scribingUnits" min="0"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 px-3 py-2"
+                 [value]="scribingUnits() ?? ''"
+                 (input)="onScribingUnitsChange($event)" readonly>
+        </div>
+        <div>
+          <label for="scribingPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Scribing Price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="scribingPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="scribingPrice() ?? ''"
+                   (input)="onScribingPriceChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Danger Board -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Danger Board</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="noOfDangerBoards" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Danger board</label>
+          <input type="number" id="noOfDangerBoards" min="0" placeholder="e.g., 2"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfDangerBoards() ?? ''"
+                 (input)="onNumberOfDangerBoardsChange($event)">
+        </div>
+        <div>
+          <label for="dangerBoardPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Danger Board Price (per board)</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="dangerBoardPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="dangerBoardPrice() ?? ''"
+                   (input)="onDangerBoardPriceChange($event)">
+          </div>
+        </div>
+      </div>
+       <!-- Multi-function Meter -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Multi-function Meter</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="noOfMeters" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Multi-function Meter</label>
+          <input type="number" id="noOfMeters" min="0" placeholder="e.g., 1"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfMeters() ?? ''"
+                 (input)="onNumberOfMetersChange($event)">
+        </div>
+        <div>
+          <label for="meterPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Multi-function Meter price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="meterPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="meterPrice() ?? ''"
+                   (input)="onMeterPriceChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Transport Charge -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Transport Charge</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <div>
+          <label for="transportUnits" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Transport Charge (Units)</label>
+          <input type="number" id="transportUnits" min="0"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 px-3 py-2"
+                 [value]="transportUnits() ?? ''"
+                 (input)="onTransportUnitsChange($event)" readonly>
+        </div>
+        <div>
+          <label for="transportPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Transport Charge price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="transportPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="transportPrice() ?? ''"
+                   (input)="onTransportPriceChange($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN SWITCHES INCOMING AND OUTGOING -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        MAIN SWITCHES INCOMING AND OUTGOING
+      </h2>
+      <!-- Switch (IA) for incoming -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Switch (IA) for incoming:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="switchTypeIA" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type of Switch</label>
+          <input type="text" id="switchTypeIA" placeholder="e.g., L&T"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="switchTypeIA()"
+                 (input)="onSwitchTypeIAChange($event)">
+        </div>
+        <div>
+          <label for="noOfSwitches400A" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Switch</label>
+          <input type="number" id="noOfSwitches400A" min="0" placeholder="e.g., 1"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfSwitches400A() ?? ''"
+                 (input)="onNumberOfSwitches400AChange($event)">
+        </div>
+        <div>
+          <label for="switchPrice400A" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Switch incoming price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="switchPrice400A" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="switchPrice400A() ?? ''"
+                   (input)="onSwitchPrice400AChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Switch (OA)-1 for outgoing -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Switch (OA)-1 for OUTGOING:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="switchTypeOA1" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type of Switch</label>
+          <input type="text" id="switchTypeOA1" placeholder="e.g., Siemens"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="switchTypeOA1()"
+                 (input)="onSwitchTypeOA1Change($event)">
+        </div>
+        <div>
+          <label for="noOfSwitches315A" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Switch</label>
+          <input type="number" id="noOfSwitches315A" min="0" placeholder="e.g., 2"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfSwitches315A() ?? ''"
+                 (input)="onNumberOfSwitches315AChange($event)">
+        </div>
+        <div>
+          <label for="switchPrice315A" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Switch outgoing price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="switchPrice315A" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="switchPrice315A() ?? ''"
+                   (input)="onSwitchPrice315AChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- Switch (OA)-2 for outgoing -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">Switch (OA)-2 for OUTGOING:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4 mb-6">
+        <div>
+          <label for="switchTypeOA2" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Type of Switch</label>
+          <input type="text" id="switchTypeOA2" placeholder="e.g., ABB"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="switchTypeOA2()"
+                 (input)="onSwitchTypeOA2Change($event)">
+        </div>
+        <div>
+          <label for="noOfSwitches250A" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">No. of Switch</label>
+          <input type="number" id="noOfSwitches250A" min="0" placeholder="e.g., 3"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                 [value]="numberOfSwitches250A() ?? ''"
+                 (input)="onNumberOfSwitches250AChange($event)">
+        </div>
+        <div>
+          <label for="switchPrice250A" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Switch outgoing price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="switchPrice250A" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="switchPrice250A() ?? ''"
+                   (input)="onSwitchPrice250AChange($event)">
+          </div>
+        </div>
+      </div>
+      <!-- ETC -->
+      <h3 class="text-lg font-medium mb-3 text-slate-800 dark:text-slate-300">ETC</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+        <div>
+          <label for="etcUnits" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">ETC (Units)</label>
+          <input type="number" id="etcUnits" min="0"
+                 class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-700 px-3 py-2"
+                 [value]="etcUnits() ?? ''"
+                 (input)="onEtcUnitsChange($event)" readonly>
+        </div>
+        <div>
+          <label for="etcPrice" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">ETC price</label>
+          <div class="relative rounded-md shadow-sm">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 sm:text-sm">₹</span>
+            <input type="number" id="etcPrice" min="0" placeholder="0.00" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 pl-7 pr-4 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="etcPrice() ?? ''"
+                   (input)="onEtcPriceChange($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Adjustments Section -->
+    <section class="mb-6">
+      <h2 class="text-2xl font-semibold border-b-2 border-slate-300 dark:border-slate-600 pb-2 mb-4">
+        Adjustments
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-4">
+         <div>
+            <label for="sundriesPercent" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Sundries (%)</label>
+            <input type="number" id="sundriesPercent" min="0" placeholder="1" 
+                   class="block w-full rounded-md border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-3 py-2 focus:border-sky-500 focus:ring-sky-500"
+                   [value]="sundriesPercent() ?? ''"
+                   (input)="onSundriesChange($event)">
+        </div>
+      </div>
+    </section>
+
+    <!-- Totals Summary Section -->
+    <section class="mt-8 pt-6 border-t-2 border-slate-300 dark:border-slate-600">
+      <h2 class="text-3xl font-bold mb-4 text-center text-slate-900 dark:text-white">Totals Summary</h2>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Total Sheet Area (with wastage):</span>
+          <span class="font-mono">{{ totalSheetMetalAreaWithWastage() | number:'1.2-2' }} sq.ft</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Calculated Enclosure Cost:</span>
+          <span class="font-mono">₹{{ enclosureCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Calculated Base Channel Cost:</span>
+          <span class="font-mono">₹{{ baseChannelCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Calculated Copper Bus Bar Cost:</span>
+          <span class="font-mono">₹{{ copperBusBarCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Calculated Earth Bus Bar Cost:</span>
+          <span class="font-mono">₹{{ earthBusBarCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Switches Connection 1 Cost:</span>
+          <span class="font-mono">₹{{ switchesConnectionCost1() | number:'1.2-2' }}</span>
+        </div>
+         <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Switches Connection 2 Cost:</span>
+          <span class="font-mono">₹{{ switchesConnectionCost2() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Calculated Tinning Cost:</span>
+          <span class="font-mono">₹{{ tinningCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Hylem Sheet Cost:</span>
+          <span class="font-mono">₹{{ hylemSheetCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">SMC Cost:</span>
+          <span class="font-mono">₹{{ smcCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Interconnection Charges Cost:</span>
+          <span class="font-mono">₹{{ interconnectionChargesCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Powder Coating Cost:</span>
+          <span class="font-mono">₹{{ powderCoatingCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Scribing Cost:</span>
+          <span class="font-mono">₹{{ scribingCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Danger Board Cost:</span>
+          <span class="font-mono">₹{{ dangerBoardCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Multi-function Meter Cost:</span>
+          <span class="font-mono">₹{{ multiFunctionMeterCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Transport Cost:</span>
+          <span class="font-mono">₹{{ transportCost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Switch (IA) Cost:</span>
+          <span class="font-mono">₹{{ switches400ACost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">Switch (OA)-1 Cost:</span>
+          <span class="font-mono">₹{{ switches315ACost() | number:'1.2-2' }}</span>
+        </div>
+         <div class="flex justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg">
+          <span class="font-medium">Switch (OA)-2 Cost:</span>
+          <span class="font-mono">₹{{ switches250ACost() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between p-3">
+          <span class="font-medium">ETC Cost:</span>
+          <span class="font-mono">₹{{ etcCost() | number:'1.2-2' }}</span>
+        </div>
+        
+        <hr class="my-2 border-slate-300 dark:border-slate-600">
+        
+        <div class="flex justify-between p-3 text-base">
+          <span class="font-semibold">Sub-Total:</span>
+          <span class="font-mono font-semibold">₹{{ subTotalCost() | number:'1.2-2' }}</span>
+        </div>
+         <div class="flex justify-between p-3 text-base">
+          <span class="font-semibold">Calculated Sundries Cost ({{sundriesPercent()}}%):</span>
+          <span class="font-mono font-semibold">₹{{ sundriesCost() | number:'1.2-2' }}</span>
+        </div>
+        
+        <div class="mt-4 p-4 bg-sky-100 dark:bg-sky-900/50 rounded-lg flex justify-between items-center">
+          <span class="text-xl font-bold text-sky-800 dark:text-sky-200">Grand Total:</span>
+          <span class="text-2xl font-bold font-mono text-sky-900 dark:text-sky-100">₹{{ totalCost() | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reset Button -->
+    <div class="mt-8 text-center">
+      <button (click)="resetAll()" 
+              class="px-8 py-3 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 dark:bg-slate-700 dark:hover:bg-slate-600">
+        <i class="fa-solid fa-rotate-right mr-2"></i>Reset All
+      </button>
+    </div>
+
+  </div>
+</main>
